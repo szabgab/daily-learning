@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= $title %></title>
+  <link href="/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div id="menu">
+<ul>
+  <li><a href="/">home</a></li>
+</ul>
+</div>
+
+<%= content %>
+
+</body>
+</html>
