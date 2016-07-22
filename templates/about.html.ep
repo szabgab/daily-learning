@@ -1,0 +1,11 @@
+% layout 'wrapper';
+
+<div>
+After registering you'll be able to select a subject and get a recommended article or video every day in that subject.
+That way you can improve yourself a bit every day.
+</div>
+
+<div>
+Created and maintained by <a href="http://szabgab.com/">Gabor Szabo</a>.
+</div>
+

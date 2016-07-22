@@ -6,6 +6,12 @@ get '/' => sub {
 	$c->render( 'main', title => 'Daily Learning', registration_error => '' );
 };
 
+get '/about' => sub {
+	my $c = shift;
+	$c->render( 'about', title => 'About Daily Learning' );
+};
+
+
 post '/register' => sub {
 	my $c = shift;
 	my $email = $c->param('email') || '';

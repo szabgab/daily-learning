@@ -9,6 +9,7 @@ require "$FindBin::Bin/../app.pl";
 
 
 my $t = Test::Mojo->new;
+
 $t->get_ok('/')
 	->status_is(200)
 	->text_is('head > title' => 'Daily Learning')
@@ -22,7 +23,7 @@ $t->get_ok('/')
 # TODO: test various registration failures
 $t->post_ok('/register' => form => {email => '', password => '' })
 	->status_is(200)
-	->content_like(qr{<div class="error">Lacking or invalid e-mail or password</div>})
+	->content_like(qr{Lacking or invalid e-mail or password})
 ;
 
 my $email = 'foo@example.com';
@@ -31,6 +32,13 @@ $t->post_ok('/register' => form => {email => $email, password => $password })
 	->status_is(200)
 	->content_like(qr/Thank you for registering/)
 	->content_like(qr/$email/)
+;
+
+$t->get_ok('/about')
+	->status_is(200)
+	->text_is('head > title' => 'About Daily Learning')
+	->element_exists('a[href=/]')
+	->element_exists('a[href=http://szabgab.com/]')
 ;
 
 
