@@ -58,4 +58,12 @@ Related articles
 -----------------
 * [Learn Something New Every Day](http://www.lifehack.org/articles/featured/learn-something-new-every-day.html)
 * [10 Techniques for Learning Something New Every Day](http://blog.sqwiggle.com/10-techniques-for-learning-something-new-every-day/)
+* [10 Sites to Learn Something New in 10 Minutes a Day](http://mashable.com/2009/09/24/learning-resources/)
+* [ZidBits](http://zidbits.com/)
+* [Why Drip-Feeding Content is Crucial for ELearning](http://www.learndash.com/why-drip-feeding-content-is-crucial-for-elearning/)
+
+Search terms when looking for existing solutions:
+---------------
+learn one thing a day
+dripping learning
 

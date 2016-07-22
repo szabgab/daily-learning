@@ -1,0 +1,5 @@
+% layout 'wrapper';
+
+Thank you for registering. We have sent you an e-mail to <b><%= $email %></b>.
+Please check your inbox and verify your e-mail address by clicking on the link in the e-mail.
+

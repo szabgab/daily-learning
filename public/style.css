@@ -18,3 +18,15 @@ html,body {
 #menu a {
   text-decoration:none;
 }
+
+#login {
+  border: solid 1px;
+}
+#registration {
+  border: solid 1px;
+}
+
+.error {
+  background-color: red;
+}
+
