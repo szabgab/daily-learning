@@ -1,5 +1,10 @@
 use Mojolicious::Lite;
 use Email::Valid;
+use Email::Stuffer;
+use Email::Sender::Transport::SMTP qw();
+
+my $FROM = 'gabor@szabgab.com';
+my $SECRET = 'My very secret passphrase.';
 
 get '/' => sub {
 	my $c = shift;
@@ -25,10 +30,50 @@ post '/register' => sub {
 		return;
 	}
 
+	my $html = $c->render_to_string('mail_confirmation', confirm_url => '', not_me_url => '');
+	my $text = 'Text version of the Registration mail';
+	send_mail({
+		From    => $FROM,
+		To      => $email,
+		Subject => 'Daily learning e-mail confirmation',
+	},	$html, $text);
+
 	$c->render( 'register', title => 'Daily Learning', email => $email );
 	return;
 };
  
-app->secrets(['My very secret passphrase.']);
+app->secrets([$SECRET]);
 app->start;
+
+
+sub send_mail {
+	my ( $raw_header, $html, $text ) = @_;
+
+	my %header = %$raw_header;
+
+	$html    ||= '';
+	$text    ||= '';
+	my $subject = delete $header{Subject};
+	my $from    = delete $header{From};
+	my $to      = delete $header{To};
+
+	my $email = Email::Stuffer->text_body($text)->html_body($html)->subject($subject)->from($from)->transport(
+		Email::Sender::Transport::SMTP->new(
+			{
+				host => 'localhost',
+			}
+		)
+	);
+	foreach my $key ( keys %header ) {
+		$email->header( $key, $header{$key} );
+	}
+
+	# TODO: send would return an Email::Sender::Success__WITH__Email::Sender::Role::HasMessage object on success
+	# but it is unclear what would be returned if it failed
+	# so for now we return undef on success and the exception string on failure
+	my $err;
+	eval { $email->to($to)->send_or_die; 1 } or do { $err = $@ // 'Unknonw error'; };
+	return $err;
+}
+
 
