@@ -2,9 +2,12 @@ use Mojolicious::Lite;
 use Email::Valid;
 use Email::Stuffer;
 use Email::Sender::Transport::SMTP qw();
+use MongoDB;
+use DateTime::Tiny;
 
 my $FROM = 'gabor@szabgab.com';
 my $SECRET = 'My very secret passphrase.';
+my $DATABASE = 'daily';
 
 get '/' => sub {
 	my $c = shift;
@@ -29,6 +32,27 @@ post '/register' => sub {
 		$c->render( 'main', title => 'Daily Learning', registration_error => 'Lacking or invalid e-mail or password' );
 		return;
 	}
+
+	# Check if e-mail is already in the database, report if it is.
+	my $db = get_db();
+	my $users = $db->get_collection('users');
+	#if ($users->find_on({ email => $email })) {
+	#	$c->render( 'main', title => 'Daily Learning', registration_error => 'This e-mail is already in our database. Would you like to <a href="/login">log in</a> instead of registering?' );
+	#	return;
+	#}
+
+
+	# Encrypt password
+	# Generate validation code
+
+	# store new user in database
+	my $user = $users->insert({
+		email             => $email,
+		registration_date => DateTime::Tiny->now,
+		#password          => $encrypted,
+		#code              => $code,
+	});
+
 
 	my $html = $c->render_to_string('mail_confirmation', confirm_url => '', not_me_url => '');
 	my $text = 'Text version of the Registration mail';
@@ -76,4 +100,8 @@ sub send_mail {
 	return $err;
 }
 
+sub get_db {
+	my $client     = MongoDB::MongoClient->new( host => 'localhost', port => 27017 );
+	return $client->get_database($DATABASE);
+}
 
